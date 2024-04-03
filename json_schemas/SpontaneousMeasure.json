@@ -1,0 +1,75 @@
+{
+  "title": "SpontaneousMeasure",
+  "type": "object",
+  "properties": {
+    "UUID": {
+      "title": "Uuid",
+      "type": "string",
+      "format": "uuid"
+    },
+    "Timetag": {
+      "title": "Timetag",
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    },
+    "Data": {
+      "title": "Data",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/DataObjectMeasure"
+      }
+    }
+  },
+  "required": [
+    "UUID",
+    "Timetag",
+    "Data"
+  ],
+  "definitions": {
+    "DataObjectMeasure": {
+      "title": "DataObjectMeasure",
+      "type": "object",
+      "properties": {
+        "Value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "Invalidity": {
+          "title": "Invalidity",
+          "enum": [
+            0,
+            1,
+            2
+          ],
+          "type": "integer"
+        },
+        "ErrorCode": {
+          "title": "Errorcode",
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "type": "integer"
+        },
+        "Timetag": {
+          "title": "Timetag",
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "Value",
+        "Invalidity",
+        "ErrorCode",
+        "Timetag"
+      ]
+    }
+  }
+}

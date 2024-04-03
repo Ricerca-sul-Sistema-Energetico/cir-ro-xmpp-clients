@@ -1,0 +1,29 @@
+{
+  "title": "CommandSuspendUntil",
+  "description": "PAS pg. 34, riga 706, keyword: LD_CIR/CSIDESE2.ClcStr.ctlVal.\nSospensione totale del servizio di ricarica da garantire fino al tempo indicato.",
+  "type": "object",
+  "properties": {
+    "UUID": {
+      "title": "Uuid",
+      "type": "string",
+      "format": "uuid"
+    },
+    "Timetag": {
+      "title": "Timetag",
+      "description": "unix timestamp of when the command was sent",
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    },
+    "Tmax": {
+      "title": "Tmax",
+      "description": "unix timestamp until which the command must be enforced",
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "UUID",
+    "Timetag",
+    "Tmax"
+  ]
+}

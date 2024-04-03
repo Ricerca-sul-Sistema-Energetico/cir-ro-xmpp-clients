@@ -1,0 +1,41 @@
+{
+  "title": "AcknowledgeCommand",
+  "type": "object",
+  "properties": {
+    "UUID": {
+      "title": "Uuid",
+      "type": "string",
+      "format": "uuid"
+    },
+    "Timetag": {
+      "title": "Timetag",
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    },
+    "Duration": {
+      "title": "Duration",
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    },
+    "Ack": {
+      "title": "Ack",
+      "type": "boolean"
+    },
+    "Cause": {
+      "title": "Cause",
+      "enum": [
+        0,
+        1,
+        2
+      ],
+      "type": "integer"
+    }
+  },
+  "required": [
+    "UUID",
+    "Timetag",
+    "Duration",
+    "Ack",
+    "Cause"
+  ]
+}

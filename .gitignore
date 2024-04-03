@@ -1,0 +1,13 @@
+.venv
+.env
+debug.py
+.vscode
+__pycache__
+venv
+.idea
+json_examples
+json_examples_new
+new_json_proposals
+*.pdf
+models_from_schemas
+generate_schemas.py 

@@ -1,0 +1,36 @@
+{
+  "title": "CommandLimitPowerUntil",
+  "description": "PAS pg. 33, riga 701, keyword: LD_CIR/CSIDWMX2.WLimPctSpt.ctlVal.\nLimite alla potenza massima [W] dell\u2019infrastruttura di ricarica da mantenere per durata di tempo [s] dalla\nricezione del comando.",
+  "type": "object",
+  "properties": {
+    "UUID": {
+      "title": "Uuid",
+      "type": "string",
+      "format": "uuid"
+    },
+    "Timetag": {
+      "title": "Timetag",
+      "description": "unix timestamp of when the command was sent",
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    },
+    "MaximumPower": {
+      "title": "Maximumpower",
+      "description": "maximum power limit [W] for the recharging infrastructure",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "Tmax": {
+      "title": "Tmax",
+      "description": "unix timestamp until which the command must be enforced",
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "UUID",
+    "Timetag",
+    "MaximumPower",
+    "Tmax"
+  ]
+}
