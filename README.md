@@ -8,7 +8,7 @@ Let people know what your project can do specifically. Provide context and add a
 ## Getting started
 Clone git repository 
 ```bash
-git clone http://172.25.102.129/ict/cir-ro-xmpp-clients.git
+git clone https://github.com/Ricerca-sul-Sistema-Energetico/cir-ro-xmpp-clients.git
 ```
 
 Make sure you have python 3.11 installed on your machine. Previous python versions have not been tested, but could work as well.  
