@@ -37,7 +37,7 @@ class xmppClientModule:
             return False
         if not authentication:
             return False
-        print(f"Connection: {connection} \n authentication: {authentication}")
+        Logger.info(f"Connection: {connection} \n authentication: {authentication}")
         return True
 
     def assign_authorized_jids(self, new_auth_jids: List[str]):
@@ -89,14 +89,14 @@ class xmppClientModule:
     def start_client_module(self):
         while True:
             try:
-                print("Beginning listening ...")
+                Logger.info("Beginning listening ...")
                 self.start_listening()
-                print("Not connected - attempting reconnect in a moment.")
+                Logger.info("Not connected - attempting reconnect in a moment.")
                 reconnection = self.connect_to_server()
                 if not reconnection:
                     raise ConnectionError
             except ConnectionError:
-                print("Could not reconnect after disconnection")
+                Logger.info("Could not reconnect after disconnection")
             except Exception as e:
-                print(f"Caught exception! \n {e}")
+                Logger.info(f"Caught exception! \n {e}")
                 traceback.print_exc()

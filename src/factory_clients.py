@@ -19,7 +19,7 @@ if message_handler_func is not None:
     )
 
     client_creation = xmpp_client.connect_to_server()
-
+    Logger.info(f"Client creation result: {client_creation}")
     xmpp_client.assign_authorized_jids(cfg.authorized_clients)
 
 else:
