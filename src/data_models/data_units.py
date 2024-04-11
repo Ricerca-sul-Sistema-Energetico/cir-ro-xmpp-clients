@@ -1,4 +1,4 @@
-from pydantic import BaseModel, conint, validator, Field, ConfigDict
+from pydantic import BaseModel, conint, validator, Field
 from typing import Dict, Literal
 import uuid
 from enums.project_enums import CyclicEnums, SpontaneousEnums, StateAlarmEnums
