@@ -1,5 +1,6 @@
 {
   "title": "AcknowledgeCommand",
+  "description": "Messaggio di acknowledge seguito alla ricezione di un comando",
   "type": "object",
   "properties": {
     "UUID": {

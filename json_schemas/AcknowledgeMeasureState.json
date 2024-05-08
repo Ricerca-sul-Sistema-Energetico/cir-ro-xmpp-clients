@@ -1,0 +1,22 @@
+{
+  "title": "AcknowledgeMeasureState",
+  "description": "Messaggio di acknowledge in conseguenza ad una misura oppure uno stato",
+  "type": "object",
+  "properties": {
+    "UUID": {
+      "title": "Uuid",
+      "type": "string",
+      "format": "uuid"
+    },
+    "Timetag": {
+      "title": "Timetag",
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    }
+  },
+  "required": [
+    "UUID",
+    "Timetag"
+  ],
+  "additionalProperties": false
+}

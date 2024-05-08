@@ -32,7 +32,7 @@
       "properties": {
         "Value": {
           "title": "Value",
-          "type": "number"
+          "type": "integer"
         },
         "Invalidity": {
           "title": "Invalidity",

@@ -25,5 +25,6 @@
     "UUID",
     "Timetag",
     "Duration"
-  ]
+  ],
+  "additionalProperties": false
 }

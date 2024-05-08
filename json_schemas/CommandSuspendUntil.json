@@ -25,5 +25,6 @@
     "UUID",
     "Timetag",
     "Tmax"
-  ]
+  ],
+  "additionalProperties": false
 }
