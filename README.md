@@ -27,15 +27,25 @@ The .env file contains all the parameters of your xmpp client. \
 Request for xmpp parameters for your company contacting ricarica.ev@rse-web.it 
 
 ## Begin testing
-
+The service can be started by simply launching the main.py script or, in alternative, by istantiating a Docker contatiner. 
+### Launch by command line
 To start the client service simply run the main.py file from command line 
 ```bash
 python main.py
 ```
 or using any code editor. \
-APIs can also be triggered manually via a FastApi interface, which can be accessed from browsers at https://localhost:8000/docs# (substitute localhost with hosting IP if service is not run locally). \ 
+APIs can also be triggered manually via a FastApi interface, which can be accessed from browsers at https://localhost:8000/docs# (substitute localhost with hosting IP if service is not run locally).  
 Depending on the xmpp client defined in the .env file ("cir" or "ro") different APIs will be available. Wrong configuration makes no API available to appear.
-
+### Create containerized service with Docker
+The repository also includes a Dockerfile, allowing to istantiate the service inside a Docker conatiner (https://www.docker.com/get-started/).\
+After having compiled the .env file, enter the foldet containing the Dockerfile and run the following command inside the command line in order to build the image of your docker service:
+```bash
+sudo docker build -t docker-image-name .
+```
+Then, run the docker container. It is important to map docker ports on the hosting machine ports: api inteface exposed on port 8000 and xmpp interface on port 5222.
+```bash
+sudo docker run -d -p 8000:8000 -p 5222:5222 --restart unless-stopped --name container_name docker-image-name
+```
 ## Usage
 There are two ways to use this repository.
 ### 1- Complete utilization
