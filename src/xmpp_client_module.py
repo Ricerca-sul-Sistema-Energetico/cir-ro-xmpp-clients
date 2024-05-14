@@ -29,16 +29,16 @@ class xmppClientModule:
         self.client_type = client_type
         self.message_callback = messages_handlers
 
-    def connect_to_server(self) -> bool:
+    def connect_to_server(self) -> str | None:
 
         connection = self.client.connect(server=(self.server_ip, self.server_port))
         authentication = self.client.auth(self.jid.getNode(), self.password)  # , resource="TestBot"
         if not connection:
-            return False
+            return None
         if not authentication:
-            return False
+            return None
         Logger.info(f"Connection: {connection} \n authentication: {authentication}")
-        return True
+        return connection
 
     def assign_authorized_jids(self, new_auth_jids: List[str]):
         self.authorized_jids += new_auth_jids
