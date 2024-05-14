@@ -43,7 +43,7 @@ class xmppClientModule:
     def assign_authorized_jids(self, new_auth_jids: List[str]):
         self.authorized_jids += new_auth_jids
 
-    def start_listening(self):
+    def register_callbacks(self) -> bool:
         if self.client is not None:
             # Register the message handler which is used to respond to messages from the authorized contacts.
             # message_callback = handle_RO_messages()
@@ -52,14 +52,24 @@ class xmppClientModule:
             # Register the presence handler which is used to automatically authorize presence-subscription requests from authorized contacts.
             presence_callback = handle_presences(jids=self.authorized_jids)
             self.client.RegisterHandler("presence", presence_callback)
+            return True
+        else:
+            Logger.info("No xmpp client assigned to xmpp module. Could not register callbacks.")
+            return False
 
-            # Go "online".
+    def send_initial_presence(self):
+        # Go "online".
+        if self.client.isConnected():
             self.client.sendInitPresence()
             self.client.Process()
+        else:
+            Logger.info("Client not connected - no init presence sent")
 
-            while self.client.isConnected():
-                self.client.Process()
-                time.sleep(1)
+    def remain_listening(self):
+        while self.client.isConnected():
+            self.client.Process()
+            time.sleep(1)
+        Logger.info("Connection lost")
 
     async def send_message(
         self, node: str | None = None, domain: str | None = None, message_type: str | None = None, body: str = ""
@@ -87,16 +97,17 @@ class xmppClientModule:
         return False
 
     def start_client_module(self):
+        Logger.info("Starting the client ...")
+        # callbacks = self.register_callbacks()
+        # if callbacks:
         while True:
             try:
-                Logger.info("Beginning listening ...")
-                self.start_listening()
-                Logger.info("Not connected - attempting reconnect in a moment.")
-                reconnection = self.connect_to_server()
-                if not reconnection:
-                    raise ConnectionError
-            except ConnectionError:
-                Logger.info("Could not reconnect after disconnection")
+                if self.client.isConnected():
+                    Logger.info(f"Client connected. Connecion status: {self.client.isConnected()}. Ready to listen ...")
+                    self.send_initial_presence()
+                    self.remain_listening()
+                Logger.info(f"Client connection status: {self.client.isConnected() != ''}")
+                time.sleep(5)
             except Exception as e:
                 Logger.info(f"Caught exception! \n {e}")
                 traceback.print_exc()
