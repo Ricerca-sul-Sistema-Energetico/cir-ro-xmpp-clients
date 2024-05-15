@@ -7,8 +7,8 @@ Source code to instantiate an XMPP client interface compliant to [CEI 0-21 Annex
 This software instantiates a python XMPP client that connects to an XMPP server and sends XMPP messages 
 compliant with the PAS specifications, which have been translated in the json_schemas. \
 
-In order to use this client and test the XMPP communication, a REST-API is exposed on https://localhost:8000/docs# that
-allows accessing the XMPP client communication interface for sending XMPP messages. 
+In order to use this client and test the XMPP communication, a REST-API is exposed on http://localhost:8000/docs# that
+allows accessing the XMPP client communication interface for sending XMPP messages.
 
 All the configurations shall be edited in the .env file (use the 'example.env' file and rename it). 
 Depending on the client_type ("cir" or "ro") different APIs will be exposed.
