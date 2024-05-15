@@ -5,7 +5,7 @@ Source code to instantiate an XMPP client interface compliant to [CEI 0-21 Annex
 ## Description
 
 This software instantiates a python XMPP client that connects to an XMPP server and sends XMPP messages 
-compliant with the PAS specifications, which have been translated in the json_schemas. \
+compliant with the PAS specifications, which have been translated in the json_schemas. 
 
 In order to use this client and test the XMPP communication, a REST-API is exposed on http://localhost:8000/docs# that
 allows accessing the XMPP client communication interface for sending XMPP messages.
@@ -59,7 +59,8 @@ sudo docker run -d -p 8000:8000 -p 5222:5222 --restart unless-stopped --name con
 There are two ways to use this repository.
 
 ### 1- Complete utilization
-In this case all the repository is used by downloading all the files, setting up the pyhon environment and running the main.py script. This will istantiate an xmpp communication interface fully compliant with CEI 0-21 and PAS 57-127 perscriptions. Such interface can be directly integrated on a CIR device on in a Remote Operator backend. 
+In this case all the repository is used by downloading all the files, setting up the pyhon environment and running the main.py script. This will istantiate an xmpp communication interface fully compliant with CEI 0-21 and PAS 57-127 perscriptions. Such interface can be directly integrated on a CIR device on in a Remote Operator backend. \
+When the service is istantiated, the client does not connect to the server automatically. It remains disconnected until the POST api /connect_to_server is called. In any moment the client connection can be checked using GET /get_connection_status. Manual disconnection using POST /disconnect_from_server.
 
 ### 2- Partial utilization
 If a user decides to autonomously implement its communication interface, it can rely on message json schemas container in the json_schemas folder. Such files allow to create dataobjects compliant to the standards in any programming language, facilitating alternative implementations to this repository. 

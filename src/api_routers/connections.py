@@ -30,6 +30,7 @@ async def connect_to_server():
         callbacks = xmpp_client.register_callbacks()
     except Exception as e:
         Logger.info(f"Exception during connection attempt: {e}")
+        Logger.info(f"Trying reconnect and reauth ...")
         connection_result = xmpp_client.client.reconnectAndReauth()
     return connection_result
 
