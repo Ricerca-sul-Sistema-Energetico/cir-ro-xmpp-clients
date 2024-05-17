@@ -6,7 +6,6 @@ class CyclicEnums(Enum):
     PWR_M1 = "LD_CIR/M1MMXU1.TotW.mag"
     PWR_M2 = "LD_CIR/M2MMXU1.TotW.mag"
     PWR_AV = "LD_CIR/M1DWMX1.WMaxSpt.setMag"
-    FREQ = "LD_CIR/M1MMXU1.Hz.mag"
 
 
 class SpontaneousEnums(Enum):
