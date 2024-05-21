@@ -13,6 +13,7 @@ from data_models.cir_ro_message import (
 from enums.project_enums import AcknowledgeADUEnums
 from typing import Union
 import time
+from typing import Literal
 
 
 def generate_command_acknowledge(
@@ -22,25 +23,26 @@ def generate_command_acknowledge(
         CommandLimitPowerUntil,
         CommandSuspendUntil,
     ],
+    acknowledge_result: bool = True,
+    cause: Literal[0, 1, 2, 3] = 0,
 ):
+    if data_unit is not None:
+        acknowledge_dict = data_unit.dict()
+        acknowledge_dict["Ack"] = acknowledge_result
+        acknowledge_dict["Cause"] = cause
+        acknowledge_data_unit = AcknowledgeCommand(**acknowledge_dict)
 
-    if isinstance(data_unit, (CommandLimitPowerDuration, CommandSuspendDuration)):
-        command_duration = data_unit.Duration  # type: ignore
-    if isinstance(data_unit, (CommandLimitPowerUntil, CommandSuspendUntil)):
-        command_duration = round(data_unit.Tmax - data_unit.Timetag)  # type: ignore
-    acknowledge_data_unit = AcknowledgeCommand(
-        UUID=data_unit.UUID, Timetag=int(time.time()), Duration=command_duration, Ack=True, Cause=1
-    )
-    acknowledgement_message = CirRoMessage(
-        ADUtype=AcknowledgeADUEnums.ACKNOWLEDGE_COMMAND.value, DataUnit=acknowledge_data_unit
-    )
+        acknowledgement_message = CirRoMessage(
+            ADUtype=AcknowledgeADUEnums.ACKNOWLEDGE_COMMAND.value, DataUnit=acknowledge_data_unit
+        )
+
     return acknowledgement_message
 
 
 def generate_message_state_acknowledge(
     data_unit: Union[CyclicMeasure, SpontaneousMeasure, StateAlarm],
 ):
-    acknowledge_data_unit = AcknowledgeMeasureState(UUID=data_unit.UUID, Timetag=int(time.time()))
+    acknowledge_data_unit = AcknowledgeMeasureState(UUID=data_unit.UUID, Timetag=int(time.time()), Value=True)
     acknowledge_message = CirRoMessage(
         ADUtype=AcknowledgeADUEnums.ACKNOWLEDGE_MEASURE.value, DataUnit=acknowledge_data_unit
     )
