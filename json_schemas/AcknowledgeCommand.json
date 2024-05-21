@@ -13,8 +13,20 @@
       "exclusiveMinimum": 0,
       "type": "integer"
     },
+    "MaximumPower": {
+      "title": "Maximumpower",
+      "description": "maximum power limit [W] for the recharging infrastructure",
+      "minimum": 0,
+      "type": "integer"
+    },
     "Duration": {
       "title": "Duration",
+      "exclusiveMinimum": 0,
+      "type": "integer"
+    },
+    "Tmax": {
+      "title": "Tmax",
+      "description": "unix timestamp until which the command must be enforced",
       "exclusiveMinimum": 0,
       "type": "integer"
     },
@@ -35,7 +47,6 @@
   "required": [
     "UUID",
     "Timetag",
-    "Duration",
     "Ack",
     "Cause"
   ]

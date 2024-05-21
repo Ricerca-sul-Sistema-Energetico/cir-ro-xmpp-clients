@@ -32,5 +32,6 @@
     "Timetag",
     "MaximumPower",
     "Duration"
-  ]
+  ],
+  "additionalProperties": false
 }
