@@ -33,7 +33,6 @@ def CIR_message_handler(client, stanza):
     message_dict: dict = json.loads(message_content)
 
     try:
-        print(message_dict)
         message_istance = CirRoMessage(**message_dict)
         adu_type = message_istance.ADUtype
         data_unit = message_istance.DataUnit

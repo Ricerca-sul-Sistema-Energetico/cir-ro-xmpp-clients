@@ -137,46 +137,4 @@ class AcknowledgeCommand(BaseModel):
     Duration: Optional[conint(gt=0)]  # type: ignore
     Tmax: Optional[int] = Field(description="unix timestamp until which the command must be enforced", gt=0)
     Ack: bool
-    Cause: Literal[0, 1, 2, 3]
-
-
-# class AcknowledgeCommandLimitPowerDuration(BaseModel):
-#     """Messaggio di acknowledge seguito alla ricezione di un comando"""
-
-#     UUID: uuid.UUID
-#     Timetag: conint(gt=0)  # type: ignore
-#     MaximumPower: int = Field(description="maximum power limit [W] for the recharging infrastructure", ge=0)
-#     Duration: conint(gt=0)  # type: ignore
-#     Ack: bool
-#     Cause: Literal[0, 1, 2, 3]
-
-
-# class AcknowledgeCommandLimitPowerUntil(BaseModel):
-#     """Messaggio di acknowledge seguito alla ricezione di un comando"""
-
-#     UUID: uuid.UUID
-#     Timetag: conint(gt=0)  # type: ignore
-#     MaximumPower: int = Field(description="maximum power limit [W] for the recharging infrastructure", ge=0)
-#     Tmax: int = Field(description="unix timestamp until which the command must be enforced", gt=0)
-#     Ack: bool
-#     Cause: Literal[0, 1, 2, 3]
-
-
-# class AcknowledgeCommandSuspendDuration(BaseModel):
-#     """Messaggio di acknowledge seguito alla ricezione di un comando"""
-
-#     UUID: uuid.UUID
-#     Timetag: conint(gt=0)  # type: ignore
-#     Duration: conint(gt=0)  # type: ignore
-#     Ack: bool
-#     Cause: Literal[0, 1, 2, 3]
-
-
-# class AcknowledgeCommandSuspendUntil(BaseModel):
-#     """Messaggio di acknowledge seguito alla ricezione di un comando"""
-
-#     UUID: uuid.UUID
-#     Timetag: conint(gt=0)  # type: ignore
-#     Tmax: int = Field(description="unix timestamp until which the command must be enforced", gt=0)
-#     Ack: bool
-#     Cause: Literal[0, 1, 2, 3]
+    Cause: Literal[0, 1, 2]
