@@ -3,4 +3,7 @@ pydantic
 python-dotenv==0.21.0
 fastapi==0.82.0
 uvicorn
+slixmpp
+# winloop
 
+# sleekxmpp
