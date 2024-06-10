@@ -11,3 +11,4 @@ new_json_proposals
 *.pdf
 models_from_schemas
 generate_schemas.py 
+certs/
