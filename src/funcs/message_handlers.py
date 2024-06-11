@@ -82,7 +82,7 @@ def CIR_message_handler(client, stanza):
             response_dict = {"ADUtype": AcknowledgeADUEnums.ACKNOWLEDGE_COMMAND.value, "DataUnit": data_unit}
             response = json.dumps(response_dict)
             Logger.info(f"Sending wrong command acknoledgement {response}")
-            client.send(xmpp.Message(sender, response, typ=adu_type))
+            client.send(xmpp.Message(sender, response, typ=message_type))
 
         else:
             # WRONG ADUTYPE
@@ -97,7 +97,7 @@ def CIR_message_handler(client, stanza):
             data_unit["Cause"] = 3
             response_dict = {"ADUtype": AcknowledgeADUEnums.ACKNOWLEDGE_COMMAND.value, "DataUnit": data_unit}
             response = json.dumps(response_dict)
-            client.send(xmpp.Message(sender, response, typ=adu_type))
+            client.send(xmpp.Message(sender, response, typ=message_type))
             return
 
 
@@ -115,7 +115,7 @@ def RO_message_handler(client, stanza):
     message_dict: dict = json.loads(message_content)
     try:
         message_istance = CirRoMessage(**message_dict)
-        message_type = message_istance.ADUtype
+        adu_type = message_istance.ADUtype
         data_unit = message_istance.DataUnit
 
         # MESSAGE IS CORRECT
@@ -129,8 +129,8 @@ def RO_message_handler(client, stanza):
         ):
             acknowledgement = generate_message_state_acknowledge(data_unit=data_unit)
             response = acknowledgement.json()
-            Logger.info(f"Sending command acknoledgement to {sender}")
-            Logger.debug(f"Sending command acknoledgement response: {response}")
+            Logger.info(f"Sending message acknoledgement to {sender}")
+            Logger.debug(f"Sending message acknoledgement response: {response}")
             client.send(xmpp.Message(sender, response, typ=message_type))
 
         else:
@@ -159,7 +159,7 @@ def RO_message_handler(client, stanza):
             Logger.error(f"Recieved wrong CIR message DataUnit {data_unit}")
             response_dict = {"ADUtype": AcknowledgeADUEnums.ACKNOWLEDGE_MEASURE.value, "DataUnit": data_unit_response}
             response = json.dumps(response_dict)
-            client.send(xmpp.Message(sender, response, typ=adu_type))
+            client.send(xmpp.Message(sender, response, typ=message_type))
         else:
             # WRONG ADUTYPE
             Logger.error(f"Recieved wrong ADU key {adu_type}")
@@ -170,7 +170,7 @@ def RO_message_handler(client, stanza):
 
             response_dict = {"ADUtype": AcknowledgeADUEnums.ACKNOWLEDGE_MEASURE.value, "DataUnit": data_unit_response}
             response = json.dumps(response_dict)
-            client.send(xmpp.Message(sender, response, typ=adu_type))
+            client.send(xmpp.Message(sender, response, typ=message_type))
             return
 
 
