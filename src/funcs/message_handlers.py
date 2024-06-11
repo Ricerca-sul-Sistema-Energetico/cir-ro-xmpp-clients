@@ -188,7 +188,7 @@ def handle_presences(jids: List[str]):
         sender = stanza.getFrom()
         presence_type = stanza.getType()
         if presence_type == "subscribe":
-            if any([sender.bareMatch(x) for x in jids]):
-                client.send(xmpp.Presence(to=sender, typ="subscribed"))
+            # if any([sender.bareMatch(x) for x in jids]):
+            client.send(xmpp.Presence(to=sender, typ="subscribed"))
 
     return handler
