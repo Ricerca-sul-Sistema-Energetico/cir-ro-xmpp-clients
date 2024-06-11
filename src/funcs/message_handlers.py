@@ -29,7 +29,8 @@ def CIR_message_handler(client, stanza):
     sender = stanza.getFrom()
     message_type = stanza.getType()
     message_content = stanza.getBody()
-    Logger.info(f"Arrived message type {message_type} from {sender}. \n Content: {message_content}")
+    Logger.info(f"Arrived message from RO {sender}.")
+    Logger.debug(f"Message content: {message_content}")
     message_dict: dict = json.loads(message_content)
 
     try:
@@ -39,7 +40,8 @@ def CIR_message_handler(client, stanza):
 
         # MESSAGE IS CORRECT
         if isinstance(data_unit, AcknowledgeMeasureState):
-            Logger.info(f"Recieved acknowledgement to message {data_unit.UUID}")
+            Logger.info(f"Recieved acknowledgement from RO {sender}.")
+            Logger.debug(f"Recieved acknowledgement to message {data_unit.UUID}")
             return
         elif isinstance(
             data_unit,
@@ -52,7 +54,8 @@ def CIR_message_handler(client, stanza):
         ):
             acknowledgement = generate_command_acknowledge(data_unit=data_unit)
             response = acknowledgement.json()
-            Logger.info(f"Sending command acknoledgement {response}")
+            Logger.info(f"Sending command acknoledgement to {sender}")
+            Logger.debug(f"Acknoledgement: {response}")
             client.send(xmpp.Message(sender, response, typ=adu_type))
 
         else:
@@ -107,7 +110,8 @@ def RO_message_handler(client, stanza):
     sender = stanza.getFrom()
     message_type = stanza.getType()
     message_content = stanza.getBody()
-    Logger.info(f"Arrived message type {message_type} from {sender}. \n Content: {message_content}")
+    Logger.info(f"Arrived message from CIR {sender}.")
+    Logger.debug(f"Message content: {message_content}")
     message_dict: dict = json.loads(message_content)
     try:
         message_istance = CirRoMessage(**message_dict)
@@ -116,7 +120,8 @@ def RO_message_handler(client, stanza):
 
         # MESSAGE IS CORRECT
         if isinstance(data_unit, AcknowledgeCommand):
-            Logger.info(f"Recieved acknowledgement to message {data_unit.UUID}")
+            Logger.info(f"Recieved acknowledgement from CIR {sender}.")
+            Logger.debug(f"Recieved acknowledgement to message {data_unit.UUID}")
             return
         elif isinstance(
             data_unit,
@@ -124,7 +129,8 @@ def RO_message_handler(client, stanza):
         ):
             acknowledgement = generate_message_state_acknowledge(data_unit=data_unit)
             response = acknowledgement.json()
-            Logger.info(f"Sending command acknoledgement {response}")
+            Logger.info(f"Sending command acknoledgement to {sender}")
+            Logger.debug(f"Sending command acknoledgement response: {response}")
             client.send(xmpp.Message(sender, response, typ=message_type))
 
         else:
