@@ -68,4 +68,5 @@ if __name__ == "__main__":
     """Finally, we connect the bot and start listening for messages"""
 
     xmpp.connect(address=("172.25.102.182", 5222))
+    # Mongoose: 172.25.102.182 force_starttls=True Prosody:172.25.100.144
     xmpp.process()
