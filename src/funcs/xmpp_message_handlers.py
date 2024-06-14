@@ -1,7 +1,7 @@
-import xmpp
-from typing import List
 from read_config import Logger, cfg
 import json
+from slixmpp import ClientXMPP
+
 from funcs.acknowledgement import generate_command_acknowledge, generate_message_state_acknowledge
 from data_models.cir_ro_message import (
     CirRoMessage,
@@ -17,15 +17,15 @@ from data_models.cir_ro_message import (
 )
 
 
-def CIR_message_handler(client, stanza):
+def CIR_message_handler(client: ClientXMPP, msg):
     """
     Handler function used by CIR-type client.
     Based on message type recieved from the RO responds with
     Acknowledge Command or simply gets the Acknowledge Message
     """
-    sender = stanza.getFrom()
-    message_type = stanza.getType()
-    message_content = stanza.getBody()
+    sender = msg["from"]
+    message_content = msg["body"]
+    message_type = msg["type"]
     Logger.info(f"Arrived message type {message_type} from {sender}. \n Content: {message_content}")
     message_dict: dict = json.loads(message_content)
     message_istance = CirRoMessage(**message_dict)
@@ -47,7 +47,7 @@ def CIR_message_handler(client, stanza):
         acknowledgement = generate_command_acknowledge(data_unit=data_unit)
         response = acknowledgement.json()
         Logger.info(f"Sending command acknoledgement {response}")
-        client.send(xmpp.Message(sender, response, typ=message_type))
+        client.send_message(mto=sender, mbody=response)
     elif isinstance(data_unit, AcknowledgeMeasureState):
         Logger.info(f"Recieved acknowledgement to message {data_unit.UUID}")
     else:
@@ -56,15 +56,15 @@ def CIR_message_handler(client, stanza):
         )
 
 
-def RO_message_handler(client, stanza):
+def RO_message_handler(client: ClientXMPP, msg):
     """
     Handler function used by RO-type client.
     Based on message type recieved from the CIR responds with
     Acknowledge Command or simply gets the Acknowledge Message
     """
-    sender = stanza.getFrom()
-    message_type = stanza.getType()
-    message_content = stanza.getBody()
+    sender = msg["from"]
+    message_content = msg["body"]
+    message_type = msg["type"]
     Logger.info(f"Arrived message type {message_type} from {sender}. \n Content: {message_content}")
     message_dict: dict = json.loads(message_content)
     message_istance = CirRoMessage(**message_dict)
@@ -81,31 +81,23 @@ def RO_message_handler(client, stanza):
         acknowledgement = generate_message_state_acknowledge(data_unit=data_unit)
         response = acknowledgement.json()
         Logger.info(f"Sending command acknoledgement {response}")
-        client.send(xmpp.Message(sender, response, typ=message_type))
+        client.send_message(mto=sender, mbody=response)
+
     elif isinstance(data_unit, AcknowledgeCommand):
         Logger.info(f"Recieved acknowledgement to message {data_unit.UUID}")
     else:
         Logger.error(
-            f"Remote Operator {client.getName()} succesfully parsed incoming message but associeted data_unit is not coherent. \
+            f"Remote Operator {client.jid} succesfully parsed incoming message but associeted data_unit is not coherent. \
                     Please notify library authors."
         )
 
 
-def handle_presences(jids: List[str]):
+def presence_handler(client: ClientXMPP, msg):
     """
-    Returns a stanza handler function which automatically authorizes
-    incoming presence requests from the provided jids.
+    Handler which automatically authorizes subscription requests
+    from authorized jids.
     """
-
-    def handler(client, stanza):
-        """
-        Handler which automatically authorizes subscription requests
-        from authorized jids.
-        """
-        sender = stanza.getFrom()
-        presence_type = stanza.getType()
-        if presence_type == "subscribe":
-            if any([sender.bareMatch(x) for x in jids]):
-                client.send(xmpp.Presence(to=sender, typ="subscribed"))
-
-    return handler
+    sender = msg["from"]
+    presence_type = msg["type"]
+    if presence_type == "subscribe":
+        client.send_presence(pto=sender, ptype=presence_type)

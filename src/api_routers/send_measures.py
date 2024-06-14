@@ -18,29 +18,39 @@ router = APIRouter(
 
 @router.post("/send_cyclic_measure")
 async def send_cyclic_measure(node: str, domain: str, data_unit: CyclicMeasure):
-
-    message = CirRoMessage(ADUtype=MessageADUEnums.CYCLIC_MEASURE.value, DataUnit=data_unit)
-    message_body = message.json()
-    Logger.info(f"Client ready to send to {node}@{domain} message: {message_body}")
-    sent_attempt = await xmpp_client.send_message(node=node, domain=domain, message_type="message", body=message_body)
-    return sent_attempt
+    try:
+        message = CirRoMessage(ADUtype=MessageADUEnums.CYCLIC_MEASURE.value, DataUnit=data_unit)
+        message_body = message.json()
+        Logger.info(f"Client ready to send to {node}@{domain} message: {message_body}")
+        destination = node + "@" + domain
+        xmpp_client.send_message(mto=destination, mbody=message_body)
+        return True
+    except Exception as e:
+        Logger.error(f"Failed sending Cyclic measure: {e}")
 
 
 @router.post("/send_spontaneous_measure")
 async def send_spontaneous_measure(node: str, domain: str, data_unit: SpontaneousMeasure):
-
-    message = CirRoMessage(ADUtype=MessageADUEnums.SPONT_MEASURE.value, DataUnit=data_unit)
-    message_body = message.json()
-    Logger.info(f"Client ready to send to {node}@{domain} message: {message_body}")
-    sent_attempt = await xmpp_client.send_message(node=node, domain=domain, message_type="message", body=message_body)
-    return sent_attempt
+    try:
+        message = CirRoMessage(ADUtype=MessageADUEnums.SPONT_MEASURE.value, DataUnit=data_unit)
+        message_body = message.json()
+        Logger.info(f"Client ready to send to {node}@{domain} message: {message_body}")
+        destination = node + "@" + domain
+        xmpp_client.send_message(mto=destination, mbody=message_body)
+        return True
+    except Exception as e:
+        Logger.error(f"Failed sending Spontaneous measure: {e}")
 
 
 @router.post("/send_statealarm_measure")
 async def send_statealarm_measure(node: str, domain: str, data_unit: StateAlarm):
 
-    message = CirRoMessage(ADUtype=MessageADUEnums.STATE_ALARM.value, DataUnit=data_unit)
-    message_body = message.json()
-    Logger.info(f"Client ready to send to {node}@{domain} message: {message_body}")
-    sent_attempt = await xmpp_client.send_message(node=node, domain=domain, message_type="message", body=message_body)
-    return sent_attempt
+    try:
+        message = CirRoMessage(ADUtype=MessageADUEnums.STATE_ALARM.value, DataUnit=data_unit)
+        message_body = message.json()
+        Logger.info(f"Client ready to send to {node}@{domain} message: {message_body}")
+        destination = node + "@" + domain
+        xmpp_client.send_message(mto=destination, mbody=message_body)
+        return True
+    except Exception as e:
+        Logger.error(f"Failed sending State/Alarm: {e}")

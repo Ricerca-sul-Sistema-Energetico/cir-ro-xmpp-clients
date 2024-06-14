@@ -1,9 +1,12 @@
 from fastapi import FastAPI
+import sys
+import asyncio
 from api_routers import send_measures, send_commands
 from read_config import Logger
 from factory_clients import xmpp_client
 import threading
 import uvicorn
+import logging
 
 app = FastAPI(
     title="XMPP bidirectional client",
@@ -18,6 +21,10 @@ if xmpp_client.client_type == "ro":
     app.include_router(send_commands.router)
 
 if __name__ == "__main__":
+    if sys.platform == "win32":
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    # logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
+
     threading.Thread(target=xmpp_client.start_client_module).start()
     Logger.info("running uvicorn programmatically - DEBUG mode only")
     uvicorn.run(

@@ -1,26 +1,38 @@
-from funcs.message_handlers import CIR_message_handler, RO_message_handler
-from xmpp_client_module import xmppClientModule
+from funcs.xmpp_message_handlers import CIR_message_handler, RO_message_handler, presence_handler
+from xmpp_client_module import SLIClientModule
 from read_config import cfg, Logger
 
 
 handlers_dict = {"cir": CIR_message_handler, "ro": RO_message_handler}
 message_handler_func = handlers_dict[cfg.client_type.lower()]
 
+jid = "elsa@localhost"
+pwd = "elsa"
+certfile = "certs\\pier_prosody.pem"
+keyfile = "certs\\pier_prosody.key"
+ca_certs = "certs\\caserver.pem"
+
+
 if message_handler_func is not None:
-    xmpp_client = xmppClientModule(
-        node=cfg.node,
-        domain=cfg.domain,
-        password=cfg.pwd,
-        server_ip=cfg.server_host,
-        server_port=cfg.server_port,
+    xmpp_client = SLIClientModule(
+        jid=jid,
+        password=pwd,
+        sasl_mech="EXTERNAL",
+        message_hanler=message_handler_func,
+        presence_handler=presence_handler,
         client_type=cfg.client_type.lower(),
-        messages_handlers=message_handler_func,
-        authorized_jids=[],
+        certfile=certfile,
+        keyfile=keyfile,
+        ca_certs=ca_certs,
     )
 
-    client_creation = xmpp_client.connect_to_server()
-    Logger.info(f"Client creation result: {client_creation}")
-    xmpp_client.assign_authorized_jids(cfg.authorized_clients)
+    xmpp_client.register_plugin("xep_0030")  # Service Discovery
+    xmpp_client.register_plugin("xep_0199")  # Ping
+    xmpp_client.register_plugin("xep_0257")
+    xmpp_client.register_plugin("xep_0115")  # Scram-sha-1
+
+    xmpp_client.connect(address=(cfg.server_host, cfg.server_port))
+    Logger.info(f"Client connection: {xmpp_client.is_connected()}")
 
 else:
     Logger.error(f"Failed to istantiate xmpp client! Wrong configuration settings for client type: {cfg.client_type}")

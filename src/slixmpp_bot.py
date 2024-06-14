@@ -2,9 +2,7 @@ import sys
 import asyncio
 import logging
 from slixmpp import ClientXMPP
-from slixmpp.jid import JID
 import ssl
-import os
 
 """Here we will create out echo bot class"""
 
@@ -25,10 +23,12 @@ class EchoBot(ClientXMPP):
         self.add_event_handler("message", self.message)
 
         if sasl_mech == "EXTERNAL":
-            self.ssl_version = ssl.PROTOCOL_SSLv23
-            self.ssl_context = ssl.create_default_context()  # ssl.Purpose.CLIENT_AUTH cafile=ca_certs
+            self.ssl_version = ssl.PROTOCOL_TLSv1_2  # PROTOCOL_SSLv23
+            self.ssl_context = ssl.create_default_context(
+                ssl.Purpose.SERVER_AUTH
+            )  # ssl.Purpose.CLIENT_AUTH cafile=ca_certs
             self.ssl_context.load_cert_chain(certfile=certfile, keyfile=keyfile)
-            # self.ssl_context.load_verify_locations(cafile=ca_certs)
+            self.ssl_context.load_verify_locations(cafile=ca_certs)
 
         else:
             self.ssl_context = ssl._create_unverified_context()
@@ -51,22 +51,23 @@ if __name__ == "__main__":
 
     """Here we will configure and read command line options"""
     logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
-    jid = "devro@saslprova"
-    pwd = "devro"
-    certfile = "src\\certs\\devro.crt"
-    keyfile = "src\\certs\\devro.key"
-    ca_certs = "src\\certs\\ca-certificatiutenti.crt"
-    print(certfile + keyfile + ca_certs)
+    jid = "elsa@localhost"
+    pwd = "elsa"
+    certfile = "certs\\pier_prosody.pem"
+    keyfile = "certs\\pier_prosody.key"
+    ca_certs = "certs\\caserver.pem"  # \\
+
     """Here we will instantiate our echo bot"""
     xmpp = EchoBot(jid=jid, password=pwd, sasl_mech="EXTERNAL", certfile=certfile, keyfile=keyfile, ca_certs=ca_certs)
 
     xmpp.register_plugin("xep_0030")  # Service Discovery
     xmpp.register_plugin("xep_0199")  # Ping
     xmpp.register_plugin("xep_0257")
-    # xmpp.register_plugin("xep_0115")  # Scram-sha-1
+    xmpp.register_plugin("xep_0115")  # Scram-sha-1
 
-    """Finally, we connect the bot and start listening for messages"""
+    # Questa va nella api di connessione
+    xmpp.connect(address=("172.25.120.203", 5223))
+    # Mongoose: 172.25.102.182 force_starttls=True Prosody:172.25.100.144 #PC Elsa: 172.25.120.203
 
-    xmpp.connect(address=("172.25.102.182", 5222))
-    # Mongoose: 172.25.102.182 force_starttls=True Prosody:172.25.100.144
+    # Questa va nel main thread
     xmpp.process()
