@@ -4,7 +4,18 @@ from dotenv import dotenv_values
 
 
 Cfg = namedtuple(
-    "Cfg", ["log_level", "node", "domain", "pwd", "server_host", "server_port", "client_type", "authorized_clients"]
+    "Cfg",
+    [
+        "log_level",
+        "node",
+        "domain",
+        "pwd",
+        "server_host",
+        "server_port",
+        "client_type",
+        "authorized_clients",
+        "cert_folder",
+    ],
 )  # just the name of the namedtuple object
 
 
@@ -20,6 +31,7 @@ def get_cfg():
         server_port=dv.get("server_port", 5222),
         client_type=dv.get("client_type", "cir"),
         authorized_clients=dv.get("authorized_clients", []),
+        cert_folder=dv.get("cert_folder", "mongoose"),
     )
 
 

@@ -8,9 +8,9 @@ message_handler_func = handlers_dict[cfg.client_type.lower()]
 
 jid = "elsa@localhost"
 pwd = "elsa"
-certfile = "certs\\pier_prosody.pem"
-keyfile = "certs\\pier_prosody.key"
-ca_certs = "certs\\caserver.pem"
+certfile = cfg.cert_folder + "/public.pem"
+keyfile = cfg.cert_folder + "/private.key"
+ca_certs = cfg.cert_folder + "/caserver.pem"
 
 
 if message_handler_func is not None:
