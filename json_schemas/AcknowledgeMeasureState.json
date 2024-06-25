@@ -12,11 +12,16 @@
       "title": "Timetag",
       "exclusiveMinimum": 0,
       "type": "integer"
+    },
+    "Value": {
+      "title": "Value",
+      "type": "boolean"
     }
   },
   "required": [
     "UUID",
-    "Timetag"
+    "Timetag",
+    "Value"
   ],
   "additionalProperties": false
 }

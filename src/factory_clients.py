@@ -14,25 +14,27 @@ ca_certs = cfg.cert_folder + "/caserver.pem"
 
 
 if message_handler_func is not None:
-    xmpp_client = SLIClientModule(
-        jid=jid,
-        password=pwd,
-        sasl_mech="EXTERNAL",
-        message_hanler=message_handler_func,
-        presence_handler=presence_handler,
-        client_type=cfg.client_type.lower(),
-        certfile=certfile,
-        keyfile=keyfile,
-        ca_certs=ca_certs,
-    )
+    try:
+        xmpp_client = SLIClientModule(
+            jid=jid,
+            password=pwd,
+            sasl_mech="EXTERNAL",
+            message_hanler=message_handler_func,
+            presence_handler=presence_handler,
+            client_type=cfg.client_type.lower(),
+            certfile=certfile,
+            keyfile=keyfile,
+            ca_certs=ca_certs,
+        )
 
-    xmpp_client.register_plugin("xep_0030")  # Service Discovery
-    xmpp_client.register_plugin("xep_0199")  # Ping
-    xmpp_client.register_plugin("xep_0257")
-    xmpp_client.register_plugin("xep_0115")  # Scram-sha-1
+        xmpp_client.register_plugin("xep_0030")  # Service Discovery
+        xmpp_client.register_plugin("xep_0199")  # Ping
+        xmpp_client.register_plugin("xep_0257")
+        xmpp_client.register_plugin("xep_0115")  # Scram-sha-1
 
-    xmpp_client.connect(address=(cfg.server_host, cfg.server_port))
-    Logger.info(f"Client connection: {xmpp_client.is_connected()}")
+        xmpp_client.connect(address=(cfg.server_host, cfg.server_port))
+    except Exception as e:
+        Logger.info(f"Failed xmpp module creation. Error: {e}")
 
 else:
     Logger.error(f"Failed to istantiate xmpp client! Wrong configuration settings for client type: {cfg.client_type}")

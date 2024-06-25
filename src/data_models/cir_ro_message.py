@@ -30,7 +30,7 @@ association_adu = {
 }
 
 
-class CirRoMessage(BaseModel):
+class CirRoMessage(BaseModel, smart_union=True):
     ADUtype: str
     DataUnit: Union[
         CyclicMeasure,
