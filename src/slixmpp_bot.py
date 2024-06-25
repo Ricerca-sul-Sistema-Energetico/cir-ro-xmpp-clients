@@ -36,6 +36,7 @@ class EchoBot(ClientXMPP):
     async def start(self, event):
         self.send_presence()
         await self.get_roster()
+        print(self.client_roster)  # Dovrebbe essere il jabberid del client
 
     def message(self, msg):
         sender = msg["from"]
@@ -51,11 +52,11 @@ if __name__ == "__main__":
 
     """Here we will configure and read command line options"""
     logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
-    jid = "elsa@localhost"
+    jid = "ciao@testingsaslrse"  #
     pwd = "elsa"
-    certfile = "certs\\pier_prosody.pem"
-    keyfile = "certs\\pier_prosody.key"
-    ca_certs = "certs\\caserver.pem"  # \\
+    certfile = "certs\\prosody\\public.pem"
+    keyfile = "certs\\prosody\\private.key"
+    ca_certs = "certs\\prosody\\caserver.pem"  # \\
 
     """Here we will instantiate our echo bot"""
     xmpp = EchoBot(jid=jid, password=pwd, sasl_mech="EXTERNAL", certfile=certfile, keyfile=keyfile, ca_certs=ca_certs)
@@ -66,8 +67,8 @@ if __name__ == "__main__":
     xmpp.register_plugin("xep_0115")  # Scram-sha-1
 
     # Questa va nella api di connessione
-    xmpp.connect(address=("172.25.120.203", 5223))
-    # Mongoose: 172.25.102.182 force_starttls=True Prosody:172.25.100.144 #PC Elsa: 172.25.120.203
-
+    xmpp.connect(address=("172.25.102.92", 5223))
+    # Mongoose: 172.25.102.182 force_starttls=True Prosody:172.25.100.144 #PC Elsa: 172.25.120.203 # Prosody sasl ext: 172.25.102.92
+    print(xmpp.jid)
     # Questa va nel main thread
     xmpp.process()
