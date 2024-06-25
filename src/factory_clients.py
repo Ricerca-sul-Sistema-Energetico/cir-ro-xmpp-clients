@@ -33,6 +33,7 @@ if message_handler_func is not None:
         xmpp_client.register_plugin("xep_0115")  # Scram-sha-1
 
         xmpp_client.connect(address=(cfg.server_host, cfg.server_port))
+        xmpp_client.process()
     except Exception as e:
         Logger.info(f"Failed xmpp module creation. Error: {e}")
 

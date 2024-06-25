@@ -37,7 +37,7 @@ class SLIClientModule(ClientXMPP):
             self.ssl_context = ssl._create_unverified_context()
 
     async def start(self, event):
-        Logger.info(f"Ready to send inital presence")
+        Logger.info("Ready to send inital presence")
         self.send_presence()
         await self.get_roster()
 
@@ -45,6 +45,7 @@ class SLIClientModule(ClientXMPP):
         Logger.info("Starting the client ...")
         while True:
             try:
+                self.process()
                 if self.is_connected():
                     while self.is_connected():
                         Logger.info(f"Client connected. Connecion status: {self.is_connected()}. Ready to listen ...")

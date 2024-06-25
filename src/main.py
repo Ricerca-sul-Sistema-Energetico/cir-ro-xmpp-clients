@@ -29,7 +29,6 @@ if __name__ == "__main__":
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     # logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
 
-    threading.Thread(target=xmpp_client.start_client_module).start()
     Logger.info("Running uvicorn programmatically - DEBUG mode only")
     uvicorn.run(
         "main:app",
