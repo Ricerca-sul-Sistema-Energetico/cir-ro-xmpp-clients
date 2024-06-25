@@ -17,7 +17,7 @@ router = APIRouter(
 @router.get("/get_connection_status")
 async def get_connection():
 
-    connection_status = xmpp_client.client.isConnected()
+    connection_status = xmpp_client.is_connected()
     return connection_status
 
 
@@ -26,8 +26,8 @@ async def connect_to_server():
     Logger.info("Connecting Client ...")
     try:
         connection_result = xmpp_client.connect_to_server()
-        Logger.info(f"Client connection status: {xmpp_client.client.isConnected()}")
-        callbacks = xmpp_client.register_callbacks()
+        Logger.info(f"Client connection status: {xmpp_client.is_connected()}")
+
     except Exception as e:
         Logger.info(f"Exception during connection attempt: {e}")
         Logger.info(f"Trying reconnect and reauth ...")
@@ -37,5 +37,5 @@ async def connect_to_server():
 
 @router.post("/disconnect_from_server")
 async def disconnect_from_server():
-    disconnection_result = xmpp_client.client.disconnect()
+    disconnection_result = xmpp_client.disconnect()
     return disconnection_result

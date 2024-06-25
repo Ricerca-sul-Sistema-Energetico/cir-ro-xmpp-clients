@@ -54,8 +54,8 @@ if __name__ == "__main__":
     logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
     jid = "ciao@testingsaslrse"  #
     pwd = "elsa"
-    certfile = "certs\\prosody\\public.pem"
-    keyfile = "certs\\prosody\\private.key"
+    certfile = "certs\\prosody\\macitalia 1.crt"
+    keyfile = "certs\\prosody\\macitalia 1.key"
     ca_certs = "certs\\prosody\\caserver.pem"  # \\
 
     """Here we will instantiate our echo bot"""
