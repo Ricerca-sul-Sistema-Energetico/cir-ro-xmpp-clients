@@ -1,12 +1,11 @@
 from fastapi import FastAPI
-import sys
-import asyncio
 from api_routers import test_apis, connections, send_measures, send_commands
 from read_config import Logger
 from factory_clients import xmpp_client
-import threading
 import uvicorn
 import logging
+import threading
+import asyncio
 
 app = FastAPI(
     title="XMPP bidirectional client",
@@ -14,6 +13,14 @@ app = FastAPI(
     version="Florencio",
 )
 
+
+# @app.on_event("startup")
+# async def startup_event():
+#     xmpp_thread = threading.Thread(target=xmpp_client.process)
+#     xmpp_thread.start()
+
+
+logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
 app.include_router(test_apis.router)
 app.include_router(connections.router)
 
@@ -25,11 +32,10 @@ if xmpp_client.client_type == "ro":
     app.include_router(send_commands.router)
 
 if __name__ == "__main__":
-    if sys.platform == "win32":
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-    # logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
+    xmpp_thread = threading.Thread(target=xmpp_client.process)
+    xmpp_thread.start()
 
-    Logger.info("Running uvicorn programmatically - DEBUG mode only")
+    Logger.info("Uvicorn ready to be launched")
     uvicorn.run(
         "main:app",
         host="0.0.0.0",

@@ -52,8 +52,8 @@ if __name__ == "__main__":
 
     """Here we will configure and read command line options"""
     logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
-    jid = "ciao@testingsaslrse"  #
-    pwd = "elsa"
+    jid = "ciao@testingsaslrse"  # ciao@testingsaslrse devcir@testingrse
+    pwd = "devcir"
     certfile = "certs\\prosody\\macitalia 1.crt"
     keyfile = "certs\\prosody\\macitalia 1.key"
     ca_certs = "certs\\prosody\\caserver.pem"  # \\
@@ -67,8 +67,8 @@ if __name__ == "__main__":
     xmpp.register_plugin("xep_0115")  # Scram-sha-1
 
     # Questa va nella api di connessione
-    xmpp.connect(address=("172.25.102.92", 5223))
-    # Mongoose: 172.25.102.182 force_starttls=True Prosody:172.25.100.144 #PC Elsa: 172.25.120.203 # Prosody sasl ext: 172.25.102.92
+    xmpp.connect(address=("172.25.100.144", 5223))
+    # Mongoose: 172.25.102.182 Prosody:172.25.100.144 / rse-testing-xmpp-server.rse-web.it
     print(xmpp.jid)
     # Questa va nel main thread
     xmpp.process()

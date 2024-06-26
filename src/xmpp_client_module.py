@@ -12,8 +12,8 @@ class SLIClientModule(ClientXMPP):
         jid: str,
         password: str,
         sasl_mech: str,
-        message_hanler: Callable,
-        presence_handler: Callable,
+        message_handler: Callable,
+        # presence_handler: Callable,
         client_type: str,
         certfile: str | None = None,
         keyfile: str | None = None,
@@ -21,9 +21,10 @@ class SLIClientModule(ClientXMPP):
     ):
         super().__init__(jid, password, sasl_mech=sasl_mech)
         self.client_type = client_type
+        self.message_handler = message_handler
         self.add_event_handler("session_start", self.start)
-        self.add_event_handler("message", message_hanler)
-        self.add_event_handler("presence", presence_handler)
+        self.add_event_handler("message", self.message)
+        # self.add_event_handler("presence", presence_handler)
 
         if sasl_mech == "EXTERNAL":
             self.ssl_version = ssl.PROTOCOL_TLSv1_2  # PROTOCOL_SSLv23
@@ -41,17 +42,20 @@ class SLIClientModule(ClientXMPP):
         self.send_presence()
         await self.get_roster()
 
-    def start_client_module(self):
-        Logger.info("Starting the client ...")
-        while True:
-            try:
-                self.process()
-                if self.is_connected():
-                    while self.is_connected():
-                        Logger.info(f"Client connected. Connecion status: {self.is_connected()}. Ready to listen ...")
-                        self.process()
-                    Logger.info("Connection lost")
-                Logger.info(f"Client connection status: {self.is_connected()}")
-                time.sleep(5)
-            except Exception as e:
-                Logger.info(f"Caught exception! \n {e}")
+    def message(self, msg):
+        self.message_handler(self, msg)
+
+    # def start_client_module(self):
+    #     Logger.info("Starting the client ...")
+    #     while True:
+    #         try:
+    #             self.process()
+    #             if self.is_connected():
+    #                 while self.is_connected():
+    #                     Logger.info(f"Client connected. Connecion status: {self.is_connected()}. Ready to listen ...")
+    #                     self.process()
+    #                 Logger.info("Connection lost")
+    #             Logger.info(f"Client connection status: {self.is_connected()}")
+    #             time.sleep(5)
+    #         except Exception as e:
+    #             Logger.info(f"Caught exception! \n {e}")

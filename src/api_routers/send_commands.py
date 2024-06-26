@@ -9,7 +9,7 @@ from data_models.cir_ro_message import (
 from enums.project_enums import CommandsADUEnums
 from read_config import Logger
 from factory_clients import xmpp_client
-
+from slixmpp.jid import JID
 
 router = APIRouter(
     prefix="",

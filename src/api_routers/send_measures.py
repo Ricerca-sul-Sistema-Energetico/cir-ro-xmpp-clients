@@ -3,7 +3,9 @@ from enums.project_enums import MessageADUEnums
 from fastapi import HTTPException, APIRouter
 from factory_clients import xmpp_client
 from read_config import Logger
-
+from slixmpp.jid import JID
+import asyncio
+import threading
 
 router = APIRouter(
     prefix="",
@@ -14,6 +16,7 @@ router = APIRouter(
         500: {"description": "XMPP client error"},
     },
 )
+send_event = threading.Event()
 
 
 @router.post("/send_cyclic_measure")
@@ -23,6 +26,7 @@ async def send_cyclic_measure(node: str, domain: str, data_unit: CyclicMeasure):
         message_body = message.json()
         Logger.info(f"Client ready to send to {node}@{domain} message: {message_body}")
         destination = node + "@" + domain
+        destination = JID(jid=destination)
         xmpp_client.send_message(mto=destination, mbody=message_body)
         return True
     except Exception as e:
