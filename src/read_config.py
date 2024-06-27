@@ -2,6 +2,7 @@ import logging
 from collections import namedtuple
 from dotenv import dotenv_values
 
+logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
 
 Cfg = namedtuple(
     "Cfg",

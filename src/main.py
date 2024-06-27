@@ -14,12 +14,6 @@ app = FastAPI(
 )
 
 
-# @app.on_event("startup")
-# async def startup_event():
-#     xmpp_thread = threading.Thread(target=xmpp_client.process)
-#     xmpp_thread.start()
-
-
 logging.basicConfig(level="DEBUG", format="%(levelname)-8s %(message)s")
 app.include_router(test_apis.router)
 app.include_router(connections.router)
