@@ -188,4 +188,7 @@ def presence_handler(client: ClientXMPP, msg):
     sender = msg["from"]
     presence_type = msg["type"]
     if presence_type == "subscribe":
+        if sender.bare == client.jid:
+            Logger.info("Recieved presence from myself")
+            return
         client.send_presence(pto=sender, ptype=presence_type)

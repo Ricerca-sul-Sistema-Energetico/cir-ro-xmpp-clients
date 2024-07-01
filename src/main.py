@@ -1,40 +1,46 @@
-from fastapi import FastAPI
-from factory_clients import xmpp_client
-from api_routers import test_apis, connections, send_measures, send_commands
-from read_config import Logger
-import uvicorn
-import logging
-import threading
+from funcs.xmpp_message_handlers import CIR_message_handler, RO_message_handler, presence_handler
+from xmpp_client_module import SLIClientModule
+from read_config import cfg, Logger
+import sys
 import asyncio
 
-app = FastAPI(
-    title="XMPP bidirectional client",
-    description=""" Rest-API backend for simulating a XMPP client according to CEI 0-21 Annex X perscriptions""",
-    version="Florencio",
-)
+handlers_dict = {"cir": CIR_message_handler, "ro": RO_message_handler}
+message_handler_func = handlers_dict[cfg.client_type.lower()]
+
+jid = "ciao@testingsaslrse"  # ciao@testingsaslrse devcir@testingrse
+pwd = "devcir"
+certfile = cfg.cert_folder + "\\macitalia 1.crt"
+keyfile = cfg.cert_folder + "\\macitalia 1.key"
+ca_certs = cfg.cert_folder + "\\caserver.pem"
+
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+if message_handler_func is not None:
+    try:
+        xmpp_client = SLIClientModule(
+            jid=jid,
+            password=pwd,
+            sasl_mech="EXTERNAL",
+            message_handler=CIR_message_handler,
+            presence_handler=presence_handler,
+            client_type=cfg.client_type.lower(),
+            certfile=certfile,
+            keyfile=keyfile,
+            ca_certs=ca_certs,
+        )
+
+        xmpp_client.register_plugin("xep_0030")  # Service Discovery
+        xmpp_client.register_plugin("xep_0199")  # Ping
+        xmpp_client.register_plugin("xep_0257")
+        xmpp_client.register_plugin("xep_0115")  # Scram-sha-1
+    except Exception as e:
+        Logger.info(f"Failed xmpp module creation. Error: {e}")
+
+else:
+    Logger.error(f"Failed to istantiate xmpp client! Wrong configuration settings for client type: {cfg.client_type}")
+    raise SystemError
 
 
-app.include_router(test_apis.router)
-app.include_router(connections.router)
-
-
-if xmpp_client.client_type == "cir":
-    app.include_router(send_measures.router)
-
-if xmpp_client.client_type == "ro":
-    app.include_router(send_commands.router)
-
-if __name__ == "__main__":
-    xmpp_thread = threading.Thread(target=xmpp_client.process)
-    xmpp_thread.start()
-
-    Logger.info("Uvicorn ready to be launched")
-
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=8001,
-        log_level="debug",
-        reload=False,
-        lifespan="on",
-    )
+xmpp_client.connect(address=(cfg.server_host, cfg.server_port))
+xmpp_client.process()
