@@ -16,6 +16,8 @@ Cfg = namedtuple(
         "client_type",
         "authorized_clients",
         "cert_folder",
+        "reciever",
+        "sending_message",
     ],
 )  # just the name of the namedtuple object
 
@@ -33,6 +35,8 @@ def get_cfg():
         client_type=dv.get("client_type", "cir"),
         authorized_clients=dv.get("authorized_clients", []),
         cert_folder=dv.get("cert_folder", "mongoose"),
+        reciever=dv.get("reciever", None),
+        sending_message=dv.get("sending_message", None),
     )
 
 
