@@ -23,7 +23,8 @@ class SLIClientModule(ClientXMPP):
         self.client_type = client_type
         self.message_handler = message_handler
         self.add_event_handler("session_start", self.start)
-        self.add_event_handler("message", self.message)
+        self.add_event_handler("message", self.handle_message)
+        self.add_event_handler("send_message", self.send_pas_message)
         # self.add_event_handler("presence", presence_handler)
 
         if sasl_mech == "EXTERNAL":
@@ -42,20 +43,9 @@ class SLIClientModule(ClientXMPP):
         self.send_presence()
         await self.get_roster()
 
-    def message(self, msg):
+    def handle_message(self, msg):
         self.message_handler(self, msg)
 
-    # def start_client_module(self):
-    #     Logger.info("Starting the client ...")
-    #     while True:
-    #         try:
-    #             self.process()
-    #             if self.is_connected():
-    #                 while self.is_connected():
-    #                     Logger.info(f"Client connected. Connecion status: {self.is_connected()}. Ready to listen ...")
-    #                     self.process()
-    #                 Logger.info("Connection lost")
-    #             Logger.info(f"Client connection status: {self.is_connected()}")
-    #             time.sleep(5)
-    #         except Exception as e:
-    #             Logger.info(f"Caught exception! \n {e}")
+    async def send_pas_message(self, msg):
+        self.send(msg)
+        await self.get_roster()

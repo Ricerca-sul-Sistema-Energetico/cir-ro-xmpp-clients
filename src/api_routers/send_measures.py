@@ -16,7 +16,6 @@ router = APIRouter(
         500: {"description": "XMPP client error"},
     },
 )
-send_event = threading.Event()
 
 
 @router.post("/send_cyclic_measure")
@@ -27,7 +26,8 @@ async def send_cyclic_measure(node: str, domain: str, data_unit: CyclicMeasure):
         Logger.info(f"Client ready to send to {node}@{domain} message: {message_body}")
         destination = node + "@" + domain
         destination = JID(jid=destination)
-        xmpp_client.send_message(mto=destination, mbody=message_body)
+        message = xmpp_client.make_message(mto=destination, mbody=message_body, mfrom=xmpp_client.jid)
+        xmpp_client.event("send_message", data=message)
         return True
     except Exception as e:
         Logger.error(f"Failed sending Cyclic measure: {e}")

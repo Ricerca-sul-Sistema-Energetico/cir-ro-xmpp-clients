@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from read_config import Logger
 from factory_clients import xmpp_client
 import json
+from slixmpp.jid import JID
 
 router = APIRouter(
     prefix="",
@@ -19,5 +20,15 @@ async def send_generic_xmpp(node: str, domain: str, message: dict):
 
     message_body = json.dumps(message)
     Logger.info(f"Client ready to send to {node}@{domain} payload: {message_body}")
-    sent_attempt = await xmpp_client.send_message(node=node, domain=domain, message_type="message", body=message_body)
-    return sent_attempt
+    destination = node + "@" + domain
+    destination = JID(jid=destination)
+    xmpp_client.send_message(mto=destination, mbody=message_body)
+
+    return True
+
+
+@router.post("/get_client_name")
+async def get_client_name():
+
+    xmpp_client_name = xmpp_client.jid
+    return xmpp_client_name
