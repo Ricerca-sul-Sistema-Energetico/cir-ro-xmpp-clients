@@ -48,7 +48,7 @@ class SendBot(ClientXMPP):
         self.send_presence()
         await self.get_roster()
 
-        self.send_message(mto=reciever, mbody=message_body)
+        self.send_message(mto=reciever, mbody=json.dumps(message_body))
         self.disconnect()
 
 
