@@ -10,10 +10,11 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # copy the config file to working directory
-COPY .env .
+
 
 # copy the content of the local src directory to the working directory
 COPY ./src /src
+COPY .env /src/.env
 
 ENTRYPOINT ["python"]
 CMD ["main.py"]
