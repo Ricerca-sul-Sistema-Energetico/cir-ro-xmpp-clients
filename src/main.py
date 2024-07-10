@@ -9,9 +9,10 @@ message_handler_func = handlers_dict[cfg.client_type.lower()]
 
 jid = "ciao@testingsaslrse"  # ciao@testingsaslrse devcir@testingrse
 pwd = "devcir"
-certfile = cfg.cert_folder + "\\public.crt"
-keyfile = cfg.cert_folder + "\\private.key"
-ca_certs = cfg.cert_folder + "\\caserver.pem"
+certfile = cfg.cert_folder + "/public.crt"
+keyfile = cfg.cert_folder + "/private.key"
+ca_certs = cfg.cert_folder + "/caserver.pem"
+Logger.info(f"Certfile directory folder: {cfg.cert_folder}")
 
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())

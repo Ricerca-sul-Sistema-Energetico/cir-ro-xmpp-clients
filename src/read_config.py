@@ -34,7 +34,7 @@ def get_cfg():
         server_port=dv.get("server_port", 5222),
         client_type=dv.get("client_type", "cir"),
         authorized_clients=dv.get("authorized_clients", []),
-        cert_folder=dv.get("cert_folder", "mongoose"),
+        cert_folder=dv.get("cert_folder", "macitalia"),
         reciever=dv.get("reciever", None),
         sending_message=dv.get("sending_message", None),
     )
@@ -57,3 +57,4 @@ def get_logger(logger_name: str, level: str = "DEBUG"):
 
 cfg = get_cfg()
 Logger = get_logger(logger_name="APP Logger", level=cfg.log_level)
+Logger.info(f"Configuration tuple:{cfg}")
