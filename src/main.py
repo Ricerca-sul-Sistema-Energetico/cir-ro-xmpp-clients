@@ -44,4 +44,5 @@ else:
 
 
 xmpp_client.connect(address=(cfg.server_host, cfg.server_port))
+# xmpp_client.default_port = cfg.server_port
 xmpp_client.process()
