@@ -2,6 +2,6 @@ pydantic
 python-dotenv==0.21.0
 slixmpp
 typing
-# winloop
+fastapi==0.82.0
 
-# sleekxmpp
+
