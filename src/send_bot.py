@@ -49,7 +49,8 @@ class SendBot(ClientXMPP):
         await self.get_roster()
 
         self.send_message(mto=reciever, mbody=json.dumps(message_body))
-        self.disconnect()
+        print(f"Message body sent: {message_body}")
+        # self.disconnect()
 
 
 if __name__ == "__main__":
