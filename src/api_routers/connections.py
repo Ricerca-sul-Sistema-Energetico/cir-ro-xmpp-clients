@@ -21,20 +21,6 @@ async def get_connection():
     return connection_status
 
 
-@router.post("/connect_to_server")
-async def connect_to_server():
-    Logger.info("Connecting Client ...")
-    try:
-        connection_result = xmpp_client.connect_to_server()
-        Logger.info(f"Client connection status: {xmpp_client.is_connected()}")
-
-    except Exception as e:
-        Logger.info(f"Exception during connection attempt: {e}")
-        Logger.info(f"Trying reconnect and reauth ...")
-        connection_result = xmpp_client.client.reconnectAndReauth()
-    return connection_result
-
-
 @router.post("/disconnect_from_server")
 async def disconnect_from_server():
     disconnection_result = xmpp_client.disconnect()

@@ -29,7 +29,8 @@ async def send_limit_pwr_duration(node: str, domain: str, data_unit: CommandLimi
         message_body = message.json()
         Logger.info(f"Client ready to send to {node}@{domain} command: {message_body}")
         destination = node + "@" + domain
-        xmpp_client.send_message(mto=destination, mbody=message_body)
+        message = xmpp_client.make_message(mto=destination, mbody=message_body)
+        xmpp_client.send_raw(data=str(message))
         return True
     except Exception as e:
         Logger.error(f"Failed sending Limit Pwr Duration: {e}")
@@ -43,7 +44,8 @@ async def send_limit_pwr_until(node: str, domain: str, data_unit: CommandLimitPo
         message_body = message.json()
         Logger.info(f"Client ready to send to {node}@{domain} command: {message_body}")
         destination = node + "@" + domain
-        xmpp_client.send_message(mto=destination, mbody=message_body)
+        message = xmpp_client.make_message(mto=destination, mbody=message_body)
+        xmpp_client.send_raw(data=str(message))
         return True
     except Exception as e:
         Logger.error(f"Failed sending Limit Pwr Until: {e}")
@@ -57,7 +59,8 @@ async def send_suspend_duration(node: str, domain: str, data_unit: CommandSuspen
         message_body = message.json()
         Logger.info(f"Client ready to send to {node}@{domain} command: {message_body}")
         destination = node + "@" + domain
-        xmpp_client.send_message(mto=destination, mbody=message_body)
+        message = xmpp_client.make_message(mto=destination, mbody=message_body)
+        xmpp_client.send_raw(data=str(message))
         return True
     except Exception as e:
         Logger.error(f"Failed sending Suspend Duration: {e}")
@@ -71,7 +74,8 @@ async def send_suspend_until(node: str, domain: str, data_unit: CommandSuspendUn
         message_body = message.json()
         Logger.info(f"Client ready to send to {node}@{domain} command: {message_body}")
         destination = node + "@" + domain
-        xmpp_client.send_message(mto=destination, mbody=message_body)
+        message = xmpp_client.make_message(mto=destination, mbody=message_body)
+        xmpp_client.send_raw(data=str(message))
         return True
     except Exception as e:
         Logger.error(f"Failed sending Suspend Until: {e}")
