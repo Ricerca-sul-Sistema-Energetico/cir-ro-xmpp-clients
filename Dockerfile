@@ -16,4 +16,4 @@ COPY .env .
 COPY ./src /src
 
 ENTRYPOINT ["python"]
-CMD ["slixmpp_bot.py"]
+CMD ["main.py"]
