@@ -21,7 +21,7 @@ if message_handler_func is not None:
             jid=jid,
             password=pwd,
             sasl_mech="EXTERNAL",
-            message_handler=CIR_message_handler,
+            message_handler=message_handler_func,
             # presence_handler=presence_handler,
             client_type=cfg.client_type.lower(),
             certfile=certfile,
