@@ -15,7 +15,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # copy the content of the local src directory to the working directory
 COPY src .
 COPY .env .env
-EXPOSE 8000
 
 
 # Comando per avviare il server FastAPI con uvicorn
