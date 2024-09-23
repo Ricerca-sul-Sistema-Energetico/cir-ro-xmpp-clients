@@ -29,9 +29,8 @@ class SLIClientModule(ClientXMPP):
 
         if sasl_mech == "EXTERNAL":
             self.ssl_version = ssl.PROTOCOL_TLSv1_2  # PROTOCOL_SSLv23
-            self.ssl_context = ssl.create_default_context(
-                ssl.Purpose.SERVER_AUTH
-            )  # ssl.Purpose.CLIENT_AUTH cafile=ca_certs
+            self.ssl_context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)  # ssl.Purpose.CLIENT_AUTH cafile=ca_certs
+            Logger.info(f"Loading certificates from {certfile} ; {keyfile}")
             self.ssl_context.load_cert_chain(certfile=certfile, keyfile=keyfile)
             self.ssl_context.load_verify_locations(cafile=ca_certs)
 
