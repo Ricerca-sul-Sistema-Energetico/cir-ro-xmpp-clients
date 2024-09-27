@@ -1,5 +1,7 @@
 .venv
-.env
+.env.xmpp
+.env.mqtt
+.env.project
 debug.py
 .vscode
 __pycache__
