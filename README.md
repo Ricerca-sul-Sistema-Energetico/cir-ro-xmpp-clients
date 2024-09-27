@@ -1,16 +1,22 @@
 # CIR-RO xmpp-client
 
-Source code to instantiate an XMPP client interface compliant to [CEI 0-21 Annex X](https://mycatalogo.ceinorme.it/cei/item/0010019013/?sso=y) and relative [PAS 57-127](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://static.ceinorme.it/strumenti-online/doc/20075.pdf) 
+Source code to instantiate:
+1) an XMPP client interface compliant to [CEI 0-21 Annex X](https://mycatalogo.ceinorme.it/cei/item/0010019013/?sso=y) and relative [PAS 57-127](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://static.ceinorme.it/strumenti-online/doc/20075.pdf)
+2) an MQTT-XMPP translator 
+3) a REST-API interface
 
 ## Description
 
 This software instantiates a python XMPP client that connects to an XMPP server and sends XMPP messages 
 compliant with the PAS specifications, which have been translated in the json_schemas. 
 
-In order to use this client and test the XMPP communication, a REST-API is exposed on http://localhost:8000/docs# that
+In order to use this client and test the XMPP communication, a REST-API is exposed on http://localhost:8001/docs# that
 allows accessing the XMPP client communication interface for sending XMPP messages.
 
-All the configurations shall be edited in the .env file (use the 'example.env' file and rename it). 
+In addiction, an MQTT-XMPP translator could be used. The Translator instantiate both MQTT publisher and subscriber clients,
+that allow accessing the XMPP client communication interface for sending XMPP messages for "Cyclic Measure" and "Power Limit Command". 
+
+All the configurations shall be edited in the .env.mqtt, .env.xmpp and .env.project files (use the 'example.env.xxx' files and rename them). 
 Depending on the client_type ("cir" or "ro") different APIs will be exposed.
 
 
@@ -27,11 +33,11 @@ Install all the required packages reported in requirements.txt
 ```bash
 pip install -r requirements.txt
 ```
-## Create .env file
+## Create .env.xxx files
 
-The .env file contains all the parameters of your xmpp client. \
-.env file must contain all the fields contained in example.env. \
-.env file must be compiled with the information provided by repository owners.
+The .env.xxx file contains all the parameters of your project and xmpp-mqtt clients. \
+.env.xxx file must contain all the fields contained in example.env.xxx \
+.env.xxx file must be compiled with the information provided by repository owners.
 Request for xmpp parameters for your company contacting ricarica.ev@rse-web.it 
 
 ## Begin testing
@@ -46,13 +52,13 @@ python main.py
 
 ### Create containerized service with Docker
 The repository also includes a Dockerfile, allowing to istantiate the service inside a Docker conatiner (https://www.docker.com/get-started/).\
-After having compiled the .env file, enter the foldet containing the Dockerfile and run the following command inside the command line in order to build the image of your docker service:
+After having compiled the .env file, enter the folder containing the Dockerfile and run the following command inside the command line in order to build the image of your docker service:
 ```bash
 sudo docker build -t docker-image-name .
 ```
-Then, run the docker container. It is important to map docker ports on the hosting machine ports: api inteface exposed on port 8000 and xmpp interface on port 5222.
+Then, run the docker container. It is important to map docker ports on the hosting machine ports: api inteface exposed on port 8001, xmpp interface on port 5222 and mqtt broker on port 1883.
 ```bash
-sudo docker run -d -p 8000:8000 -p 5222:5222 --restart unless-stopped --name container_name docker-image-name
+sudo docker run -d -p 8000:8000 -p 5222:5222 -p 1883:1883 --restart unless-stopped --name container_name docker-image-name
 ```
 
 ## Usage
