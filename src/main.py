@@ -3,9 +3,7 @@ from factory_clients import xmpp_client
 from api_routers import test_apis, connections, send_measures, send_commands
 from read_config import Logger
 import uvicorn
-import logging
 import threading
-import asyncio
 
 app = FastAPI(
     title="XMPP bidirectional client",
