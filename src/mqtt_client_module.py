@@ -201,7 +201,7 @@ class ClientMQTTpub(MQTTClientBase):
 class CIRClient(ClientMQTTsub):
     def __init__(self):
         #topics = [f"{user}/load/+"]
-        topics = [f"{cfg_pjt.mqtt_usr}/ems/cir"]  
+        topics = [f"{cfg_pjt.mqtt_usr}/ems/cir"]    #"{user_id}/ems/cir"  
         super().__init__(client_id=f"CIRClient_{cfg_pjt.mqtt_usr}", topic_list=topics)
         self.measure_manager = MeasureManager()
         #self.measure_manager = CyclicMeasureManager()

@@ -4,15 +4,17 @@ from mqtt_client_module import ROClient, CIRClient, SLIClientModuleMQTT
 from funcs.xmpp_message_handlers import CIR_message_handler, RO_message_handler, presence_handler
 import asyncio
 import sys
+import os               # To ensure compatibility with both Windows and Linux 
 
 handlers_dict = {"cir": CIR_message_handler, "ro": RO_message_handler}
 message_handler_func = handlers_dict[cfg_pjt.client_type.lower()]
 
 jid = "ciao@testingsaslrse" #ciao@testingsaslrse devcir@testingrse
 pwd = "devcir"
-certfile = cfg_pjt.cert_folder + "\\public.crt"
-keyfile = cfg_pjt.cert_folder + "\\private.key"
-ca_certs = cfg_pjt.cert_folder + "\\caserver.pem"
+certfile = os.path.join(cfg_pjt.cert_folder, "public.crt")
+keyfile = os.path.join(cfg_pjt.cert_folder, "private.key")
+ca_certs = os.path.join(cfg_pjt.cert_folder, "caserver.pem")
+
 
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())

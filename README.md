@@ -46,13 +46,20 @@ python main.py
 
 ### Create containerized service with Docker
 The repository also includes a Dockerfile, allowing to istantiate the service inside a Docker conatiner (https://www.docker.com/get-started/).\
-After having compiled the .env file, enter the foldet containing the Dockerfile and run the following command inside the command line in order to build the image of your docker service:
+After having compiled the .env.xmpp and .env.mqtt files, enter the folder containing the Dockerfile and run the following command inside the command line in order to build the image of your docker service:
 ```bash
-sudo docker build -t docker-image-name .
+sudo docker build . -t docker-image-name
 ```
-Then, run the docker container. It is important to map docker ports on the hosting machine ports: api inteface exposed on port 8000 and xmpp interface on port 5222.
+The image is created using Python 3.11-slim. You can use the same image to run multiple containers for different purposes. 
+
+After creating the image, modify the .env.project file to: 
+1. Instantiate a CIR or an RO 
+2. Enable the FAST API interface 
+3. Enable the MQTT translator.
+
+Then, run the docker container. It is important to map docker fastapi ports on the hosting machine ports if set to True in the .env.project file: api inteface exposed on port 8000 as default.
 ```bash
-sudo docker run -d -p 8000:8000 -p 5222:5222 --restart unless-stopped --name container_name docker-image-name
+sudo docker run -d -p 8000:8000 -v $(pwd)/.env.project:/src/.env.project -v /data:/data --restart unless-stopped --name container_name docker-image-name:docker-image-tag
 ```
 
 ## Usage

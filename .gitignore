@@ -14,3 +14,4 @@ new_json_proposals
 models_from_schemas
 generate_schemas.py 
 certs
+test_mqtt

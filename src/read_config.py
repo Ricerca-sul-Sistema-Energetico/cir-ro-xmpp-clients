@@ -51,7 +51,7 @@ def get_cfg_pjt():
     return Cfg_pjt(
         fastapi=dv.get("fastapi", False),
         fastapi_port = int(dv.get("fastapi_port", 8001)),
-        cert_folder=dv.get("cert_folder", "certs\\send"),
+        cert_folder=dv.get("cert_folder", "certs"),
         jid_ro=dv.get("jid_ro"),
         jid_cir=dv.get("jid_cir"),
         log_level=dv.get("log_level", "INFO"),
