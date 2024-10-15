@@ -17,7 +17,7 @@ CSR_FILE="testpier.csr"
 KEY_FILE="pre_enrolment.key"
 CERT_FILE="pre_enrolment.crt"
 PKI_ENDPOINT="https://$pki_host/.well-known/est/simpleenroll"
-OUTPUT_CERT_FILE="src/$cert_folder/public_fake.crt"
+OUTPUT_CERT_FILE="src/$cert_folder/client_fake.crt"
 
 if [ ! -d "src/$cert_folder" ]; then
     echo "Errore: La directory 'src/$cert_folder' non esiste."

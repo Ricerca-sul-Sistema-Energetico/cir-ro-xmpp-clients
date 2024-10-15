@@ -9,7 +9,7 @@ message_handler_func = handlers_dict[cfg.client_type.lower()]
 
 jid = "ciao@testingsaslrse"  # ciao@testingsaslrse devcir@testingrse
 pwd = "devcir"
-certfile = cfg.cert_folder + "/public.crt"
+certfile = cfg.cert_folder + "/client.crt"
 keyfile = cfg.cert_folder + "/private.key"
 ca_certs = cfg.cert_folder + "/caserver.pem"
 if sys.platform == "win32":
