@@ -13,7 +13,7 @@ fi
 # Debug: stampa i valori di server_host e cert_folder
 echo "cert_folder: $cert_folder"
 
-CSR_FILE="testpier.csr"
+CSR_FILE="test.csr"
 KEY_FILE="pre_enrolment.key"
 CERT_FILE="pre_enrolment.crt"
 PKI_ENDPOINT="https://$pki_host/.well-known/est/simpleenroll"
