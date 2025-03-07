@@ -1,38 +1,46 @@
-from fastapi import FastAPI
-from factory_clients import xmpp_client
-from api_routers import test_apis, connections, send_measures, send_commands
+from factory_clients import xmpp_client, modbus_module_dict
+from pas_functions.send_measures import send_cyclic_measure
 from read_config import Logger
-import uvicorn
+
 import threading
-
-app = FastAPI(
-    title="XMPP bidirectional client",
-    description=""" Rest-API backend for simulating a XMPP client according to CEI 0-21 Annex X perscriptions""",
-    version="Florencio",
-)
+import asyncio
+from data_models.cir_ro_message import CyclicMeasure
+import uuid
+import time
 
 
-app.include_router(test_apis.router)
-app.include_router(connections.router)
+async def main():
+    while True:
+        Logger.info("Inizio ciclo di acquisizione dati modbus")
+        acquired_data = modbus_module_dict["Janitza_light"].read_device_config_measurements()
+        corrected_data = modbus_module_dict["Janitza_light"].convert_unit_of_measure(acquired_data)
+        corrected_data_value = int(corrected_data[0]["value"])
 
+        Logger.info(f"Data read: {corrected_data_value}")
+        data_cyclic = {
+            "LD_CIR/CSIMMXU1.TotW.mag": {"Value": 234, "Invalidity": 0, "ErrorCode": 0, "Timetag": 1668779108},
+            "LD_CIR/M1MMXU1.TotW.mag": {"Value": corrected_data_value, "Invalidity": 1, "ErrorCode": 1, "Timetag": 1668779108},
+            "LD_CIR/M2MMXU1.TotW.mag": {"Value": 254, "Invalidity": 1, "ErrorCode": 2, "Timetag": 1668779108},
+            "LD_CIR/M1DWMX1.WMaxSpt.setMag": {"Value": 254, "Invalidity": 1, "ErrorCode": 3, "Timetag": 1668779108},
+        }
 
-if xmpp_client.client_type == "cir":
-    app.include_router(send_measures.router)
+        cyclic_measure = CyclicMeasure(UUID=uuid.uuid4(), Timetag=int(time.time()), Data=data_cyclic)
+        if corrected_data is not None:
+            await send_cyclic_measure("testro", "testingsaslrse", cyclic_measure)
 
-if xmpp_client.client_type == "ro":
-    app.include_router(send_commands.router)
+        # Attendi prima del prossimo ciclo
+        await asyncio.sleep(20)
+
 
 if __name__ == "__main__":
-    xmpp_thread = threading.Thread(target=xmpp_client.process)
-    xmpp_thread.start()
 
-    Logger.info("Uvicorn ready to be launched")
+    Logger.info("Avvio del client XMPP...")
+    asyncio.ensure_future(main())
+    xmpp_client.process(forever=True)
+    # xmpp_thread = threading.Thread(target=xmpp_client.process)
+    # xmpp_thread.start()
+    # Avvia il ciclo principale
+    # asyncio.ensure_future(xmpp_client.process(forever=False))
 
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=8000,
-        log_level="debug",
-        reload=False,
-        lifespan="on",
-    )
+    # loop = asyncio.get_event_loop()
+    # loop.run_until_complete(main())

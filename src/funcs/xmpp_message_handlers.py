@@ -1,4 +1,4 @@
-from read_config import Logger, cfg
+from read_config import Logger, xmpp_config
 import json
 from slixmpp import ClientXMPP
 
@@ -61,7 +61,7 @@ def CIR_message_handler(client: ClientXMPP, msg):
 
         else:
             Logger.error(
-                f"CIR {cfg.node} succesfully parsed incoming message but associeted data_unit is not coherent. Please notify library authors."
+                f"CIR {xmpp_config.node} succesfully parsed incoming message but associeted data_unit is not coherent. Please notify library authors."
             )
             return
     except Exception as e:

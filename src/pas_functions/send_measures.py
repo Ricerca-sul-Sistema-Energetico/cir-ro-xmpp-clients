@@ -1,25 +1,11 @@
 from data_models.cir_ro_message import CirRoMessage, CyclicMeasure, SpontaneousMeasure, StateAlarm
 from enums.project_enums import MessageADUEnums
-from fastapi import HTTPException, APIRouter
 from factory_clients import xmpp_client
 from read_config import Logger
 from slixmpp.jid import JID
-import asyncio
-import threading
 from slixmpp.xmlstream.tostring import tostring
 
-router = APIRouter(
-    prefix="",
-    tags=["Send Measures"],
-    responses={
-        400: {"description": "Bad request"},
-        404: {"description": "Not Found"},
-        500: {"description": "XMPP client error"},
-    },
-)
 
-
-@router.post("/send_cyclic_measure")
 async def send_cyclic_measure(node: str, domain: str, data_unit: CyclicMeasure):
     try:
         message = CirRoMessage(ADUtype=MessageADUEnums.CYCLIC_MEASURE.value, DataUnit=data_unit)
@@ -34,7 +20,6 @@ async def send_cyclic_measure(node: str, domain: str, data_unit: CyclicMeasure):
         Logger.error(f"Failed sending Cyclic measure: {e}")
 
 
-@router.post("/send_spontaneous_measure")
 async def send_spontaneous_measure(node: str, domain: str, data_unit: SpontaneousMeasure):
     try:
         message = CirRoMessage(ADUtype=MessageADUEnums.SPONT_MEASURE.value, DataUnit=data_unit)
@@ -48,7 +33,6 @@ async def send_spontaneous_measure(node: str, domain: str, data_unit: Spontaneou
         Logger.error(f"Failed sending Spontaneous measure: {e}")
 
 
-@router.post("/send_statealarm_measure")
 async def send_statealarm_measure(node: str, domain: str, data_unit: StateAlarm):
 
     try:

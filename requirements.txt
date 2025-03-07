@@ -1,7 +1,11 @@
-pydantic
-python-dotenv==0.21.0
-fastapi==0.82.0
-uvicorn
-slixmpp
+# pydantic
+# python-dotenv==0.21.0
+# slixmpp
+# pymodbus
 # winloop
+
+pydantic==2.6.3
+python-dotenv==1.0.1
+slixmpp==1.8.5
+pymodbus==3.6.4
 

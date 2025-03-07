@@ -1,0 +1,16 @@
+{
+    "NAME" : "Janitza",
+    "MAX_ATTEMPTS": 3,
+    "ENDIAN_BYTEORDER": ">",
+    "ENDIAN_WORDORDER": ">",
+    "SAMPLING_TIME_S": 10,
+    "MEASUREMENTS": [
+        {
+            "REGISTER_NAME": "Ptot",
+            "REGISTER_NUMBER": 19026,
+            "VALUE_TYPE": "FLOAT32",
+            "UOM": "W"
+        }
+
+]
+}
