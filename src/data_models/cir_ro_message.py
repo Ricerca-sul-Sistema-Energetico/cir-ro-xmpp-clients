@@ -15,7 +15,7 @@ from data_models.data_units import (
     AcknowledgeCommand,
 )
 from typing import Union
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, ConfigDict
 
 association_adu = {
     MessageADUEnums.CYCLIC_MEASURE.value: CyclicMeasure,
@@ -30,7 +30,9 @@ association_adu = {
 }
 
 
-class CirRoMessage(BaseModel, smart_union=True):
+class CirRoMessage(BaseModel):
+    model_config = ConfigDict(smart_union=True)
+
     ADUtype: str
     DataUnit: Union[
         CyclicMeasure,
@@ -60,7 +62,5 @@ class CirRoMessage(BaseModel, smart_union=True):
 
         if association_adu[values["ADUtype"]] is not type(value):
             type_found = type(value).__name__
-            raise ValueError(
-                f"Wrong association ADU type with Dataunit Content! Adu: {value} \n DataUnit: {type_found}"
-            )
+            raise ValueError(f"Wrong association ADU type with Dataunit Content! Adu: {value} \n DataUnit: {type_found}")
         return value
