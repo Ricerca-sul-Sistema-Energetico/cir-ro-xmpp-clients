@@ -1,3 +1,4 @@
+import sys
 from fastapi import FastAPI
 from factory_clients import xmpp_client
 from api_routers import test_apis, connections, send_measures, send_commands
